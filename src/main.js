@@ -1,10 +1,17 @@
-export default function () {
-  console.log('12345')
+import * as Fire from '@/lib/fire.js'
 
-  var a = []
+export function init (config) {
+  var api = {}
 
-  a.forEach((item) => {
-    console.log(this.a)
-    console.log(item)
+  config.list.forEach((item) => {
+    item.path = config.prefix + item.path
+    api[item.name] = item
+    api[item.name].fire = Fire.fire
   })
+
+  return api
+}
+
+export function setHeaders (head) {
+  Fire.setHeaders(head)
 }
