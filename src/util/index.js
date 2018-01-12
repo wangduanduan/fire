@@ -26,7 +26,7 @@ export function fireFetch (url, init) {
     fetch(url, init)
     .then((res) => {
       if (res.ok) {
-        if (res.headers.get('content-type').includes('application/json')) {
+        if (res.headers.get('content-type') && res.headers.get('content-type').includes('application/json')) {
           resolve(res.json())
         } else {
           resolve(res)

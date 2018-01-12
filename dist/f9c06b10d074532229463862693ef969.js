@@ -1,3 +1,76 @@
+// modules are defined as an array
+// [ module function, map of requires ]
+//
+// map of requires is short require name -> numeric require
+//
+// anything defined in a previous bundle is accessed via the
+// orig method which is the require for previous bundles
+
+require = (function (modules, cache, entry) {
+  // Save the require from previous bundle to this closure if any
+  var previousRequire = typeof require === "function" && require;
+
+  function newRequire(name, jumped) {
+    if (!cache[name]) {
+      if (!modules[name]) {
+        // if we cannot find the module within our internal map or
+        // cache jump to the current global require ie. the last bundle
+        // that was added to the page.
+        var currentRequire = typeof require === "function" && require;
+        if (!jumped && currentRequire) {
+          return currentRequire(name, true);
+        }
+
+        // If there are other bundles on this page the require from the
+        // previous one is saved to 'previousRequire'. Repeat this as
+        // many times as there are bundles until the module is found or
+        // we exhaust the require chain.
+        if (previousRequire) {
+          return previousRequire(name, true);
+        }
+
+        var err = new Error('Cannot find module \'' + name + '\'');
+        err.code = 'MODULE_NOT_FOUND';
+        throw err;
+      }
+
+      function localRequire(x) {
+        return newRequire(localRequire.resolve(x));
+      }
+
+      localRequire.resolve = function (x) {
+        return modules[name][1][x] || x;
+      };
+
+      var module = cache[name] = new newRequire.Module;
+      modules[name][0].call(module.exports, localRequire, module, module.exports);
+    }
+
+    return cache[name].exports;
+  }
+
+  function Module() {
+    this.bundle = newRequire;
+    this.exports = {};
+  }
+
+  newRequire.Module = Module;
+  newRequire.modules = modules;
+  newRequire.cache = cache;
+  newRequire.parent = previousRequire;
+
+  for (var i = 0; i < entry.length; i++) {
+    newRequire(entry[i]);
+  }
+
+  // Override the current require with this new one
+  return newRequire;
+})({3:[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 /**
  * Define a struct error.
  *
@@ -49,29 +122,44 @@ var kindOf = function kindOf(val) {
   if (isRegexp(val)) return 'regexp';
 
   switch (ctorName(val)) {
-    case 'Symbol': return 'symbol';
-    case 'Promise': return 'promise';
+    case 'Symbol':
+      return 'symbol';
+    case 'Promise':
+      return 'promise';
 
     // Set, Map, WeakSet, WeakMap
-    case 'WeakMap': return 'weakmap';
-    case 'WeakSet': return 'weakset';
-    case 'Map': return 'map';
-    case 'Set': return 'set';
+    case 'WeakMap':
+      return 'weakmap';
+    case 'WeakSet':
+      return 'weakset';
+    case 'Map':
+      return 'map';
+    case 'Set':
+      return 'set';
 
     // 8-bit typed arrays
-    case 'Int8Array': return 'int8array';
-    case 'Uint8Array': return 'uint8array';
-    case 'Uint8ClampedArray': return 'uint8clampedarray';
+    case 'Int8Array':
+      return 'int8array';
+    case 'Uint8Array':
+      return 'uint8array';
+    case 'Uint8ClampedArray':
+      return 'uint8clampedarray';
 
     // 16-bit typed arrays
-    case 'Int16Array': return 'int16array';
-    case 'Uint16Array': return 'uint16array';
+    case 'Int16Array':
+      return 'int16array';
+    case 'Uint16Array':
+      return 'uint16array';
 
     // 32-bit typed arrays
-    case 'Int32Array': return 'int32array';
-    case 'Uint32Array': return 'uint32array';
-    case 'Float32Array': return 'float32array';
-    case 'Float64Array': return 'float64array';
+    case 'Int32Array':
+      return 'int32array';
+    case 'Uint32Array':
+      return 'uint32array';
+    case 'Float32Array':
+      return 'float32array';
+    case 'Float64Array':
+      return 'float64array';
   }
 
   if (isGeneratorObj(val)) {
@@ -81,12 +169,17 @@ var kindOf = function kindOf(val) {
   // Non-plain objects
   type = toString.call(val);
   switch (type) {
-    case '[object Object]': return 'object';
+    case '[object Object]':
+      return 'object';
     // iterators
-    case '[object Map Iterator]': return 'mapiterator';
-    case '[object Set Iterator]': return 'setiterator';
-    case '[object String Iterator]': return 'stringiterator';
-    case '[object Array Iterator]': return 'arrayiterator';
+    case '[object Map Iterator]':
+      return 'mapiterator';
+    case '[object Set Iterator]':
+      return 'setiterator';
+    case '[object String Iterator]':
+      return 'stringiterator';
+    case '[object Array Iterator]':
+      return 'arrayiterator';
   }
 
   // other
@@ -103,22 +196,17 @@ function isArray(val) {
 }
 
 function isError(val) {
-  return val instanceof Error || (typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number');
+  return val instanceof Error || typeof val.message === 'string' && val.constructor && typeof val.constructor.stackTraceLimit === 'number';
 }
 
 function isDate(val) {
   if (val instanceof Date) return true;
-  return typeof val.toDateString === 'function'
-    && typeof val.getDate === 'function'
-    && typeof val.setDate === 'function';
+  return typeof val.toDateString === 'function' && typeof val.getDate === 'function' && typeof val.setDate === 'function';
 }
 
 function isRegexp(val) {
   if (val instanceof RegExp) return true;
-  return typeof val.flags === 'string'
-    && typeof val.ignoreCase === 'boolean'
-    && typeof val.multiline === 'boolean'
-    && typeof val.global === 'boolean';
+  return typeof val.flags === 'string' && typeof val.ignoreCase === 'boolean' && typeof val.multiline === 'boolean' && typeof val.global === 'boolean';
 }
 
 function isGeneratorFn(name, val) {
@@ -126,9 +214,7 @@ function isGeneratorFn(name, val) {
 }
 
 function isGeneratorObj(val) {
-  return typeof val.throw === 'function'
-    && typeof val.return === 'function'
-    && typeof val.next === 'function';
+  return typeof val.throw === 'function' && typeof val.return === 'function' && typeof val.next === 'function';
 }
 
 function isArguments(val) {
@@ -267,7 +353,7 @@ function any(schema, defaults, options) {
       }
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  if ("development" !== 'production') {
     throw new Error(`A schema definition must be an object, array, string or function, but you passed: ${schema}`);
   } else {
     throw new Error(`Invalid schema: ${schema}`);
@@ -284,7 +370,7 @@ function any(schema, defaults, options) {
 
 function dict(schema, defaults, options) {
   if (kindOf(schema) !== 'array' || schema.length !== 2) {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Dict structs must be defined as an array with two elements, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -353,7 +439,7 @@ function dict(schema, defaults, options) {
 
 function en(schema, defaults, options) {
   if (kindOf(schema) !== 'array') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Enum structs must be defined as an array, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -400,7 +486,7 @@ function enums(schema, defaults, options) {
 
 function func(schema, defaults, options) {
   if (kindOf(schema) !== 'function') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Function structs must be defined as a function, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -415,7 +501,7 @@ function func(schema, defaults, options) {
     const isBoolean = kindOf(result) === 'boolean';
 
     if (!isReason && !isBoolean) {
-      if (process.env.NODE_ENV !== 'production') {
+      if ("development" !== 'production') {
         throw new Error(`Validator functions must return a boolean or an error reason string, but you passed: ${schema}`);
       } else {
         throw new Error(`Invalid result: ${result}`);
@@ -459,7 +545,7 @@ function instance(schema, defaults, options) {
 
 function inter(schema, defaults, options) {
   if (kindOf(schema) !== 'object') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Interface structs must be defined as an object, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -516,7 +602,7 @@ function inter(schema, defaults, options) {
 
 function lazy(schema, defaults, options) {
   if (kindOf(schema) !== 'function') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Lazy structs must be defined as an function that returns a schema, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -549,7 +635,7 @@ function lazy(schema, defaults, options) {
 
 function list(schema, defaults, options) {
   if (kindOf(schema) !== 'array' || schema.length !== 1) {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`List structs must be defined as an array with a single element, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -626,7 +712,7 @@ function literal(schema, defaults, options) {
 
 function object(schema, defaults, options) {
   if (kindOf(schema) !== 'object') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Object structs must be defined as an object, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -723,7 +809,7 @@ function optional(schema, defaults, options) {
 
 function partial(schema, defaults, options) {
   if (kindOf(schema) !== 'object') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Partial structs must be defined as an object, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -799,7 +885,7 @@ function partial(schema, defaults, options) {
 
 function scalar(schema, defaults, options) {
   if (kindOf(schema) !== 'string') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Scalar structs must be defined as a string, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -810,7 +896,7 @@ function scalar(schema, defaults, options) {
   const fn = types[schema];
 
   if (kindOf(fn) !== 'function') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`No struct validator function found for type "${schema}".`);
     } else {
       throw new Error(`Invalid type: ${schema}`);
@@ -844,7 +930,7 @@ function scalar(schema, defaults, options) {
 
 function tuple(schema, defaults, options) {
   if (kindOf(schema) !== 'array') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Tuple structs must be defined as an array, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -911,7 +997,7 @@ function tuple(schema, defaults, options) {
 
 function union(schema, defaults, options) {
   if (kindOf(schema) !== 'array') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Union structs must be defined as an array, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -947,7 +1033,7 @@ function union(schema, defaults, options) {
 
 function intersection(schema, defaults, options) {
   if (kindOf(schema) !== 'array') {
-    if (process.env.NODE_ENV !== 'production') {
+    if ("development" !== 'production') {
       throw new Error(`Intersection structs must be defined as an array, but you passed: ${schema}`);
     } else {
       throw new Error(`Invalid schema: ${schema}`);
@@ -1074,7 +1160,7 @@ function superstruct(config = {}) {
 
     function Struct(data) {
       if (this instanceof Struct) {
-        if (process.env.NODE_ENV !== 'production') {
+        if ("development" !== 'production') {
           throw new Error('The `Struct` creation function should not be used with the `new` keyword.');
         } else {
           throw new Error('Invalid `new` keyword!');
@@ -1240,4 +1326,208 @@ var main = {
   }
 };
 
-export default main;
+exports.default = main;
+},{}],4:[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  prefix: 'https://api.wellcloud.cc',
+  list: [{
+    name: 'login',
+    desp: 'sercurity login',
+    path: '/agent/login',
+    method: 'post',
+    contentType: 'formData',
+    bodyStruct: {
+      username: 'string',
+      password: 'string',
+      namespace: 'string'
+    },
+    defaultBody: {
+      password: 'Aa123456'
+    },
+    status: {
+      401: 'username or password wrong'
+    }
+  }, {
+    name: 'heartBeat',
+    desp: 'agent heart beat',
+    path: '/sdk/api/csta/agent/heartbeat/{{agentId}}',
+    method: 'post'
+  }, {
+    name: 'setAgentState',
+    desp: 'set agent state',
+    path: '/sdk/api/csta/agent/state',
+    method: 'post',
+    bodyStruct: {
+      agentId: 'string?',
+      loginId: 'string',
+      func: 'string',
+      agentMode: 'string?',
+      device: 'string?',
+      password: 'string'
+    }
+  }]
+};
+},{}],2:[function(require,module,exports) {
+"use strict";
+
+var _bundle = require("../dist/bundle.js");
+
+var _bundle2 = _interopRequireDefault(_bundle);
+
+var _apiConfig = require("./api.config.js");
+
+var _apiConfig2 = _interopRequireDefault(_apiConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+console.log('---------');
+
+const API = _bundle2.default.init(_apiConfig2.default);
+
+console.log(API);
+
+API.login.fire({}, {
+  username: '5001',
+  password: 'Aa123456',
+  namespace: 'zhen04.cc'
+}).then(res => {
+  API.$setHeaders({
+    sessionId: res.sessionId
+  });
+
+  return API.heartBeat.fire({
+    agentId: '5001@zhen04.cc'
+  });
+}).then(() => {
+  return API.setAgentState.fire({}, {
+    'loginId': '5001@zhen04.cc',
+    'device': '8001@zhen04.cc',
+    'password': 'Aa123456',
+    'agentMode': 'NotReady',
+    'func': 'Login'
+  });
+}).catch(err => {
+  console.error(err);
+});
+},{"../dist/bundle.js":3,"./api.config.js":4}],0:[function(require,module,exports) {
+var global = (1, eval)('this');
+var OldModule = module.bundle.Module;
+function Module() {
+  OldModule.call(this);
+  this.hot = {
+    accept: function (fn) {
+      this._acceptCallback = fn || function () {};
+    },
+    dispose: function (fn) {
+      this._disposeCallback = fn;
+    }
+  };
+}
+
+module.bundle.Module = Module;
+
+if (!module.bundle.parent) {
+  var ws = new WebSocket('ws://localhost:59324/');
+  ws.onmessage = function(event) {
+    var data = JSON.parse(event.data);
+
+    if (data.type === 'update') {
+      data.assets.forEach(function (asset) {
+        hmrApply(global.require, asset);
+      });
+
+      data.assets.forEach(function (asset) {
+        if (!asset.isNew) {
+          hmrAccept(global.require, asset.id);
+        }
+      });
+    }
+
+    if (data.type === 'reload') {
+      window.location.reload();
+    }
+
+    if (data.type === 'error-resolved') {
+      console.log('[parcel] ✨ Error resolved');
+    }
+
+    if (data.type === 'error') {
+      console.error(`[parcel] 🚨 ${data.error.message}\n${data.error.stack}`);
+    }
+  };
+}
+
+function getParents(bundle, id) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return [];
+  }
+
+  var parents = [];
+  var k, d, dep;
+
+  for (k in modules) {
+    for (d in modules[k][1]) {
+      dep = modules[k][1][d];
+      if (dep === id || (Array.isArray(dep) && dep[dep.length - 1] === id)) {
+        parents.push(+k);
+      }
+    }
+  }
+
+  if (bundle.parent) {
+    parents = parents.concat(getParents(bundle.parent, id));
+  }
+
+  return parents;
+}
+
+function hmrApply(bundle, asset) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+
+  if (modules[asset.id] || !bundle.parent) {
+    var fn = new Function('require', 'module', 'exports', asset.generated.js);
+    asset.isNew = !modules[asset.id];
+    modules[asset.id] = [fn, asset.deps];
+  } else if (bundle.parent) {
+    hmrApply(bundle.parent, asset);
+  }
+}
+
+function hmrAccept(bundle, id) {
+  var modules = bundle.modules;
+  if (!modules) {
+    return;
+  }
+
+  if (!modules[id] && bundle.parent) {
+    return hmrAccept(bundle.parent, id);
+  }
+
+  var cached = bundle.cache[id];
+  if (cached && cached.hot._disposeCallback) {
+    cached.hot._disposeCallback();
+  }
+
+  delete bundle.cache[id];
+  bundle(id);
+
+  cached = bundle.cache[id];
+  if (cached && cached.hot && cached.hot._acceptCallback) {
+    cached.hot._acceptCallback();
+    return true;
+  }
+
+  return getParents(global.require, id).some(function (id) {
+    return hmrAccept(global.require, id)
+  });
+}
+},{}]},{},[0,2])

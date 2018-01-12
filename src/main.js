@@ -1,17 +1,17 @@
 import * as Fire from '@/lib/fire.js'
 
-export function init (config) {
-  var api = {}
+export default {
+  init (config) {
+    var api = {}
 
-  config.list.forEach((item) => {
-    item.path = config.prefix + item.path
-    api[item.name] = item
-    api[item.name].fire = Fire.fire
-  })
+    config.list.forEach((item) => {
+      item.path = config.prefix + item.path
+      api[item.name] = item
+      api[item.name].fire = Fire.fire
+    })
 
-  return api
-}
+    api.$setHeaders = Fire.setHeaders
 
-export function setHeaders (head) {
-  Fire.setHeaders(head)
+    return api
+  }
 }

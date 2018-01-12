@@ -7,8 +7,8 @@ export default {
   input: 'src/main.js',
   output: {
     file: 'dist/bundle.js',
-    format: 'cjs',
-    name: 'fire'
+    format: 'es',
+    name: 'Fire'
   },
   plugins: [
     alias({
