@@ -1,8 +1,8 @@
 {
-  "name": "fire",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "name": "xfire",
+  "version": "0.0.2",
+  "description": "fetch configurable",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "rollup -w --config rollup.config.js",
@@ -13,8 +13,8 @@
     "type": "git",
     "url": "git+https://github.com/wangduanduan/fire.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "wangduanduan",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wangduanduan/fire/issues"
   },

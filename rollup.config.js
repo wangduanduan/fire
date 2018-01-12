@@ -6,7 +6,7 @@ import alias from 'rollup-plugin-alias'
 export default {
   input: 'src/main.js',
   output: {
-    file: 'dist/bundle.js',
+    file: 'dist/index.js',
     format: 'es',
     name: 'Fire'
   },
