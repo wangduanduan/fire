@@ -144,7 +144,7 @@ const API = xfire.init(config)
 字段名 | 类型 | 是否必须 | 默认值 | 说明
 ---|---|---|---|---
 config.prefix | string | 是 | 无 | 接口url公用的前缀
-config.list | array | 是 | 无 | 接口数组
+config.list | array | 是 | 无 | 接口数组
 
 `config list字段说明`
 
