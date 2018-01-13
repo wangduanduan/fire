@@ -1,7 +1,7 @@
 {
   "name": "xfire",
   "version": "0.0.5",
-  "description": "fetch configurable",
+  "description": "stupid simple, highly configurable fetch interface batch generation tool",
   "main": "dist/index.js",
   "module": "src/main.js",
   "scripts": {
