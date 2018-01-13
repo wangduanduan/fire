@@ -186,7 +186,7 @@ Uncaught StructError: Expected a value of type `string` for `username` but recei
 
 
 # xfire 实例 API
-xfire.init()方法会返回xfire实例对象,该对象上有一个特殊方法`$setHeaders`, 还有其他的由配置文件产生的方法。
+xfire.init()方法会返回xfire实例对象,该对象上有一个特殊方法`$setHeaders`, 还有其他的由配置文件产生的方法。
 
 ```
 const API = xfire.init(apiConfig)
@@ -259,7 +259,7 @@ path: '/store/order/{{type}}/{{age}}'
   key3: boolean
 }
 
-// 复杂的数据类型,如数组和嵌套对象,函数,将导致渲染失败
+// 复杂的数据类型,如数组和嵌套对象, 函数, 将导致渲染失败
 // bad
 {
   key1: [1, 3, 3],
