@@ -1,4 +1,4 @@
-# xfire
+# :fire::fire: xfire :fire::fire:
 
 [![npm](https://img.shields.io/npm/v/xfire.svg)](https://www.npmjs.org/package/xfire) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
 
@@ -7,17 +7,9 @@
 ---
 
 # 特点
-- 非常简单:提供配置文件,自动生成接口
-- 提前验证:支持请求体格式验证
-- 报错详细:给出具体的报错位置,字段信息
-
-# 浏览器支持
-
-xfire使用了一些es6的方法:
-- Object.keys()
-- Object.assign()
-- Promise()
-- fetch()
+- :smile: 非常简单: 提供配置文件,自动生成接口
+- :triangular_ruler: 提前验证:支持请求体格式验证
+- :bug: 报错详细: 给出具体的报错位置,字段信息
 
 # 安装
 ```
@@ -275,7 +267,7 @@ path: '/store/order/{{type}}/{{age}}'
 }
 ```
 
-# polyfill
+# :warning: polyfill
 xfire底层使用了浏览器原生的`Promise`, `fetch`, `Object.keys()`, `Object.assign()` 所以对浏览器是有要求的。`xfire本身不带有任何polyfill。`
 
 目前IE11以及以下是不支持Promise和fetch的。
