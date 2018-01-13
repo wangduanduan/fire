@@ -3,7 +3,7 @@
 
 # 特点
 - 非常简单:提供配置文件,自动生成接口
-- 提前验证:支持请求体格式验证
+- 提前验证:支持请求体格式验证
 - 报错详细:给出具体的报错位置,字段信息
 
 # 浏览器支持
@@ -133,7 +133,7 @@ const API = xfire.init(config)
 
 `config 字段说明`
 
-注意:如果config无法通过下面的格式验证,则会直接报错
+注意:如果config无法通过下面的格式验证,则会直接报错
 
 
 字段名 | 类型 | 是否必须 | 默认值 | 说明
@@ -142,15 +142,16 @@ config.prefix | string | 是 | 无 | 接口url公用的前缀
 config.list | array | 是 | 无 | 接口数组
 
 `config list字段说明`
+
 字段名 | 类型 | 是否必须 | 默认值 | 说明
 ---|---|---|---|---
 `name` | string | `是` | 无 | 接口名
 desp | string | 否 | 无 | 接口描述
-`path` | string | `是` | 无 | 接口路径
+`path` | string | `是` | 无 | 接口路径
 method | enum string | 否 | get | 请求方式: get, post, put, delete 
 contentType | enum string | 否 | json | 请求体类型: json, formData。json会被渲染: application/json; charset=UTF-8, formData会被渲染成: application/x-www-form-urlencoded; charset=UTF-8
 bodyStruct | object | 否 | 无 | 请求体格式验证结构, 如果bodyStruct存在,则使用bodyStruct验证body: 具体格式参考[superstruct](https://github.com/ianstormtaylor/superstruct/blob/master/docs/guide.md)
-defaultBody | object | 否 | 无 | 默认请求体。bodyStruct存在的情况下才有效
+defaultBody | object | 否 | 无 | 默认请求体。bodyStruct存在的情况下才有效
 status | object | 否 | 无 | 响应状态码及其含义
 
 当某个list对象的 name 不存在时,config验证时的报错:
@@ -190,7 +191,7 @@ xfire.init()方法会返回xfire实例对象,该对象上有一个特殊方法`$
 ```
 const API = xfire.init(apiConfig)
 ```
-## $setHeaders(): 设置请求头部信息
+## $setHeaders(): 设置请求头部信息
 
 $setHeaders()用来设置除了`contentType`以外的请求头, 一旦设置请求头部信息,所有的实例接口在发送请求时,都会带有该头部信息。
 ```
@@ -198,7 +199,7 @@ API.$setHeaders({sessionId: 'jfsldkf-sdflskdjf-sflskfjlsf'})
 ```
 
 ## api方法: fire(pathParm, body)
-pathParm对象上的数据最终会被渲染到`请求路径上`, body是请求体。
+pathParm对象上的数据最终会被渲染到`请求路径上`, body是请求体。
 
 ```
 ...
@@ -276,7 +277,7 @@ xfire底层使用了浏览器原生的`Promise`, `fetch`, `Object.keys()`, `Obje
 
 在此给出两个方案:
 
-## 方案1: babel-polyfill
+## 方案1: babel-polyfill
 
 通过引入[babel-polyfill](https://babeljs.io/docs/usage/polyfill/), 让浏览器支持xfire所需要的原生方法。
 
