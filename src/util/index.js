@@ -1,4 +1,6 @@
 /* global fetch */
+import { struct } from 'superstruct'
+import CONFIG_STRUCT from '@/const/config-struct.js'
 const templateRE = /{{([^}]+)?}}/
 
 export function templateQuery (tpl = '', data = {}) {
@@ -38,5 +40,13 @@ export function fireFetch (url, init) {
     .catch((err) => {
       reject(err)
     })
+  })
+}
+
+export function checkConfig (config) {
+  struct(CONFIG_STRUCT.config)(config)
+
+  config.list.forEach((item) => {
+    item = struct(CONFIG_STRUCT.item, CONFIG_STRUCT.defaultItem)(item)
   })
 }

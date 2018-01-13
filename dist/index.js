@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Define a struct error.
  *
@@ -1142,6 +1144,34 @@ function superstruct(config = {}) {
 
 const struct = superstruct();
 
+var CONTENT_TYPE = {
+  json: 'application/json; charset=UTF-8',
+  formData: 'application/x-www-form-urlencoded; charset=UTF-8'
+};
+
+var HTTP_METHOD = ['get', 'post', 'put', 'delete'];
+
+var CONFIG_STRUCT = {
+  config: {
+    prefix: 'string',
+    list: 'array'
+  },
+  item: {
+    name: 'string',
+    desp: 'string?',
+    path: 'string',
+    method: struct.enum(HTTP_METHOD.concat(undefined)),
+    contentType: struct.enum(Object.keys(CONTENT_TYPE).concat(undefined)),
+    bodyStruct: 'object?',
+    defaultBody: 'object?',
+    status: 'object?'
+  },
+  itemDefault: {
+    method: 'get',
+    contentType: CONTENT_TYPE.json
+  }
+};
+
 /* global fetch */
 var templateRE = /{{([^}]+)?}}/;
 
@@ -1188,10 +1218,13 @@ function fireFetch(url, init) {
   });
 }
 
-var CONTENT_TYPE = {
-  json: 'application/json; charset=UTF-8',
-  formData: 'application/x-www-form-urlencoded; charset=UTF-8'
-};
+function checkConfig(config) {
+  struct(CONFIG_STRUCT.config)(config);
+
+  config.list.forEach(function (item) {
+    item = struct(CONFIG_STRUCT.item, CONFIG_STRUCT.defaultItem)(item);
+  });
+}
 
 var headers = {};
 
@@ -1226,6 +1259,8 @@ function setHeaders(_headers) {
 
 var main = {
   init: function init(config) {
+    checkConfig(config);
+
     var api = {};
 
     config.list.forEach(function (item) {
@@ -1240,4 +1275,4 @@ var main = {
   }
 };
 
-export default main;
+module.exports = main;

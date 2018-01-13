@@ -1,13 +1,14 @@
 {
   "name": "xfire",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "fetch configurable",
   "main": "dist/index.js",
+  "module": "src/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "rollup -w --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
-    "parcel": "parcel ./test/index.html"
+    "parcel": "parcel ./_test/index.html"
   },
   "repository": {
     "type": "git",
@@ -27,7 +28,16 @@
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup-plugin-node-resolve": "^3.0.2"
+  },
+  "dependencies": {
     "superstruct": "^0.5.0"
-  }
+  },
+  "keywords": [
+    "fetch",
+    "ajax",
+    "xhr",
+    "promise",
+    "http"
+  ]
 }
