@@ -1,5 +1,10 @@
 # xfire
-可配置的fetch接口生成工具
+
+[![npm](https://img.shields.io/npm/v/xfire.svg)](https://www.npmjs.org/package/xfire) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
+
+可配置的fetch接口批量生成工具
+
+---
 
 # 特点
 - 非常简单:提供配置文件,自动生成接口
