@@ -1,6 +1,6 @@
 {
   "name": "xfire",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "fetch configurable",
   "main": "dist/index.js",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wangduanduan/fire.git"
+    "url": "git+https://github.com/wangduanduan/xfire.git"
   },
   "author": "wangduanduan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/wangduanduan/fire/issues"
+    "url": "https://github.com/wangduanduan/xfire/issues"
   },
-  "homepage": "https://github.com/wangduanduan/fire#readme",
+  "homepage": "https://github.com/wangduanduan/xfire#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-plugin-external-helpers": "^6.22.0",
