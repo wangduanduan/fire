@@ -1,6 +1,6 @@
 /* global fetch */
 import { struct } from 'superstruct'
-import CONFIG_STRUCT from '@/const/config-struct.js'
+import CONFIG_STRUCT from '../const/config-struct.js'
 const templateRE = /{{([^}]+)?}}/
 
 export function templateQuery (tpl = '', data = {}) {

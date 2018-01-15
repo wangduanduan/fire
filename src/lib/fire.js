@@ -1,6 +1,6 @@
 import { struct } from 'superstruct'
-import * as util from '@/util/index.js'
-import CONTENT_TYPE from '@/const/content-type.js'
+import * as util from '../util/index.js'
+import CONTENT_TYPE from '../const/content-type.js'
 
 var headers = {}
 

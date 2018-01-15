@@ -1,6 +1,6 @@
 import { struct } from 'superstruct'
-import CONTENT_TYPE from '@/const/content-type.js'
-import HTTP_METHOD from '@/const/http-method.js'
+import CONTENT_TYPE from './content-type.js'
+import HTTP_METHOD from './http-method.js'
 
 export default {
   config: {

@@ -1,5 +1,5 @@
-import * as Fire from '@/lib/fire.js'
-import * as util from '@/util/index.js'
+import * as Fire from './lib/fire.js'
+import * as util from './util/index.js'
 
 export default {
   init (config) {

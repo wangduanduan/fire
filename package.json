@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "module": "src/main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --no-cache",
     "dev": "rollup -w --config rollup.config.js",
     "build": "rollup --config rollup.config.js",
     "parcel": "parcel ./_test/index.html"
@@ -22,8 +22,13 @@
   "homepage": "https://github.com/wangduanduan/xfire#readme",
   "devDependencies": {
     "babel-core": "^6.26.0",
+    "babel-jest": "^22.0.6",
     "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "jest": "^22.0.6",
+    "regenerator-runtime": "^0.11.1",
     "rollup": "^0.53.4",
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.3",
@@ -39,5 +44,10 @@
     "xhr",
     "promise",
     "http"
-  ]
+  ],
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  }
 }
