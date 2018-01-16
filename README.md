@@ -1,6 +1,7 @@
 # :fire::fire: xfire :fire::fire:
 
 [![npm](https://img.shields.io/npm/v/xfire.svg)](https://www.npmjs.org/package/xfire) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
+[![npm](https://img.shields.io/npm/dm/xfire.svg)]()
 
 非常简单，高度可配置的fetch接口批量生成工具。
 
