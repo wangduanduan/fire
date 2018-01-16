@@ -75,7 +75,7 @@ import apiConfig from './api.config.js'
 const API = xfire.init(apiConfig)
 ```
 
-> POTST 发送formData类型的数据示例
+> POTS 发送formData类型的数据示例
 ```
 API.login.fire({}, {
   username: 'wangduanduan',
@@ -289,3 +289,61 @@ xfire底层使用了浏览器原生的`Promise`, `fetch`, `Object.keys()`, `Obje
 ```
 
 Polyfill.io读取每个请求的User-Agent头并返回适合请求浏览器的polyfill。 根据您在应用中使用的功能量身定制响应,并查看我们的实例以快速入门。
+
+
+# ajax Vs fetch
+
+`与其使用各种ajax第三方库，不如使用原始fetch`
+
+> 总结一下，Fetch 优点主要有：
+
+> 语法简洁，更加语义化
+基于标准 Promise 实现，支持 async/await
+同构方便，使用 isomorphic-fetch --[传统 Ajax 已死，Fetch 永生](https://github.com/camsong/blog/issues/2)
+未来更容易扩展 -- by me
+
+
+我使用ajax经历过三个阶段：
+1、 jQuery时期，我用jQuery的`ajax`
+2、 类似Vue的现代框架时，使用[axio](https://github.com/axios/axios)
+3、 再后来我就使用浏览器原生的`fetch`
+
+> Fetch API  提供了一个 JavaScript接口，用于访问和操纵HTTP管道的部分，例如请求和响应。它还提供了一个全局 fetch()方法，该方法提供了一种简单，合乎逻辑的方式来跨网络异步获取资源。-- [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
+
+> 这种功能以前是使用  XMLHttpRequest实现的。Fetch提供了一个更好的替代方法，可以很容易地被其他技术使用，例如 Service Workers。Fetch还提供了单个逻辑位置来定义其他HTTP相关概念，例如 CORS和HTTP的扩展。-- [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
+
+从[caniuse](https://caniuse.com/#search=fetch)的数据来看，fetch方法除IE11不支持以外，大部分常用浏览器都支持了。
+
+![](./static/fetch.png)
+
+fetch接口示例：
+```
+fetch('/users.json')
+  .then(function(response) {
+    return response.json()
+  }).then(function(json) {
+    console.log('parsed json', json)
+  }).catch(function(ex) {
+    console.log('parsing failed', ex)
+  })
+
+
+  fetch('/users.html')
+  .then(function(response) {
+    return response.text()
+  }).then(function(body) {
+    document.body.innerHTML = body
+  })
+```
+
+# fetch相关文章
+- [传统 Ajax 已死，Fetch 永生](https://github.com/camsong/blog/issues/2)
+- [fetch 简介: 新一代 Ajax API](https://juejin.im/entry/574512b7c26a38006c43567c)
+- [fetch 没有你想象的那么美
+](http://undefinedblog.com/window-fetch-is-not-as-good-as-you-imagined/)
+
+# fetch相关库
+- [github/fetch](https://github.com/github/fetch)
+
+
+
