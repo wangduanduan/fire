@@ -3,23 +3,23 @@
 [![npm](https://img.shields.io/npm/v/xfire.svg)](https://www.npmjs.org/package/xfire) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
 [![npm](https://img.shields.io/npm/dm/xfire.svg)]()
 
-非常简单，高度可配置的fetch接口批量生成工具。
+stupid simple, high configurable fetch api batch generate tool
 
 ---
 
-# 特点
-- :smile: 非常简单: 提供配置文件,自动生成接口
-- :triangular_ruler: 提前验证:支持请求体格式验证
-- :bug: 报错详细: 给出具体的报错位置,字段信息
+# Features
+- :smile: configurable: give config file, get fetch api
+- :triangular_ruler:  pre-verify body: pre verify fetch body before send 
+- :bug: detail error: detailed error informations
 
-# 安装
+# Installing
 ```
 npm install -S xfire
 
 yarn add xfire
 ```
 
-# demo
+# Example
 
 首先需要一个配置文件
 ```
@@ -68,7 +68,7 @@ export default {
 }
 ```
 
-然后引入xfire
+import xfire
 ```
 import xfire from 'xfire'
 import apiConfig from './api.config.js'
@@ -76,7 +76,7 @@ import apiConfig from './api.config.js'
 const API = xfire.init(apiConfig)
 ```
 
-> POTS 发送formData类型的数据示例
+> POST send formData example
 ```
 API.login.fire({}, {
   username: 'wangduanduan',
@@ -91,7 +91,7 @@ API.login.fire({}, {
 })
 ```
 
-> GET 数据示例
+> GET emample
 ```
 API.heartBeat.fire({
   agentId: '5001@dd.com'
@@ -104,7 +104,7 @@ API.heartBeat.fire({
 })
 ```
 
-> POST json类型数据示例
+> POST json body example
 ```
 API.setAgentState.fire({
   namespace: 'windows'
@@ -129,35 +129,35 @@ API.setAgentState.fire({
 const API = xfire.init(config)
 ```
 
-`config 字段说明`
+`config field`
 
-注意:如果config无法通过下面的格式验证,则会直接报错
+NOTICE: if config not pass check, xfire will throw a Error 
 
 
-字段名 | 类型 | 是否必须 | 默认值 | 说明
+name | type | required | defalut | description
 ---|---|---|---|---
-config.prefix | string | 是 | 无 | 接口url公用的前缀
-config.list | array | 是 | 无 | 接口数组
+config.prefix | string | yes |  | common prefix: all apis are same
+config.list | array | yes |  | api array list 
 
-`config list字段说明`
+`config list field descirption`
 
-字段名 | 类型 | 是否必须 | 默认值 | 说明
+name | type | required | default | description
 ---|---|---|---|---
-`name` | string | `是` | 无 | 接口名
-desp | string | 否 | 无 | 接口描述
-`path` | string | `是` | 无 | 接口路径
-method | enum string | 否 | get | 请求方式: get, post, put, delete 
-contentType | enum string | 否 | json | 请求体类型: json, formData。json会被渲染: application/json; charset=UTF-8, formData会被渲染成: application/x-www-form-urlencoded; charset=UTF-8
-bodyStruct | object | 否 | 无 | 请求体格式验证结构, 如果bodyStruct存在,则使用bodyStruct验证body: 具体格式参考[superstruct](https://github.com/ianstormtaylor/superstruct/blob/master/docs/guide.md)
-defaultBody | object | 否 | 无 | 默认请求体。bodyStruct存在的情况下才有效
-status | object | 否 | 无 | 响应状态码及其含义
+`name` | string | `yes` |  | api name
+desp | string | no |  | api description
+`path` | string | `yes` |  | api path
+method | enum string | no | get | methods : get, post, put, delete 
+contentType | enum string | no | json | 'json' or 'formData'。json equal : application/json; charset=UTF-8, formData equal : application/x-www-form-urlencoded; charset=UTF-8
+bodyStruct | object | no |  | reqest body struct for check, you can see [superstruct](https://github.com/ianstormtaylor/superstruct/blob/master/docs/guide.md)
+defaultBody | object | no |  | defalut body。it require bodyStruct exist 
+status | object | no | | status and reason
 
-当某个list对象的 name 不存在时,config验证时的报错:
+when list name no exist, config check throw error:
 ```
 Uncaught StructError: Expected a value of type `string` for `name` but received `undefined`.
 ```
 
-当发送请求时,请求体不符合bodyStruct时, 报错如下
+before send fetch, bodyStruct check failed, throw error
 ```
 ...
 name: 'login',
@@ -181,23 +181,21 @@ API.login.fire({}, {
 Uncaught StructError: Expected a value of type `string` for `username` but received `undefined`.
 ```
 
-
-
-# xfire 实例 API
-xfire.init()方法会返回xfire实例对象,该对象上有一个特殊方法`$setHeaders`, 还有其他的由配置文件产生的方法。
+# xfire Instance API
+xfire.init() will return xfire Instance, it has a special method `$setHeaders`, and other fetch methods
 
 ```
 const API = xfire.init(apiConfig)
 ```
-## $setHeaders(): 设置请求头部信息
+## $setHeaders(): set fetch headers
 
-$setHeaders()用来设置除了`contentType`以外的请求头, 一旦设置请求头部信息,所有的实例接口在发送请求时,都会带有该头部信息。
+$setHeaders() is used to setting headers besides `contentType`.  once set headers, all fetch apis will with the same headers. 
 ```
 API.$setHeaders({sessionId: 'jfsldkf-sdflskdjf-sflskfjlsf'})
 ```
 
-## api方法: fire(pathParm, body)
-pathParm对象上的数据最终会被渲染到`请求路径上`, body是请求体。
+## fetch api methods: fire(pathParm, body)
+pathParm will be render to `path`, body is the payload。
 
 ```
 ...
@@ -210,19 +208,19 @@ pathParm对象上的数据最终会被渲染到`请求路径上`, body是请求�
 ...
 ```
 
-类似上面的对象,会产生一个以`heartBeat`为名称的方法,所有请求方法都是fire()方法。
+like up config, will generate a fetch Object name `heartBeat`, it has a fetch method named fire
 
 ```
 API.xxx.fire(pathParm, body)
 
-// 不需要请求体时, body可以不传
+// body sometimes is optional
 API.xxx.fire(pathParm)
 
-// 不需要参数渲染到路径时,pathParm必须传空对象:{}
+// but pathParam is requred, or you can just put a empty {}
 API.xxx.fire({}, body)
 ```
 
-例子: 
+demo: 
 ```
 API.heartBeat({
   agentId: '5001@ee.com'
@@ -235,29 +233,29 @@ API.heartBeat({
 })
 ```
 
-关于`path`和 fire的 `pathParm`参数:
+aboudt `path` and `fire` `pathParm`:
 ```
-// path 如下
+// path 
 path: '/store/order/{{type}}/{{age}}'
 
-// 则pathParm应该是
+// pathParm, it look like mustache grammar
 {
   type: 'dog',
   aget: 14
 }
 ```
 
-`注意`: pathParm不支持复杂的数据类型。
+`notice`: pathParm can't be a complicated object
 
 ```
-// 原始数据类型 string, number, boolean 都是可以的
+// string, number, boolean are ok
 {
   key1: 'string',
   key2: number,
   key3: boolean
 }
 
-// 复杂的数据类型,如数组和嵌套对象, 函数, 将导致渲染失败
+// array, object, funtion will be failed
 // bad
 {
   key1: [1, 3, 3],
@@ -269,82 +267,22 @@ path: '/store/order/{{type}}/{{age}}'
 ```
 
 # :warning: polyfill
-xfire底层使用了浏览器原生的`Promise`, `fetch`, `Object.keys()`, `Object.assign()` 所以对浏览器是有要求的。`xfire本身不带有任何polyfill。`
+xfire use browser native `Promise`, `fetch`, `Object.keys()`, `Object.assign()`  and `xfire is without any polyfill。` so, you maybe need some polyfill to help xfire work on some old browser like IE11。 i give you two ways.
 
-目前IE11以及以下是不支持Promise和fetch的。
+## a: babel-polyfill
+just requre [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
 
-在此给出两个方案:
-
-## 方案1: babel-polyfill
-
-通过引入[babel-polyfill](https://babeljs.io/docs/usage/polyfill/), 让浏览器支持xfire所需要的原生方法。
-
-## 方案2: [polyfill.io](https://polyfill.io/v2/docs/)
+## b: [polyfill.io](https://polyfill.io/v2/docs/)
 
 ![](./static/polyfill-io.png)
 
-只需要为您的网站,为每个浏览器量身定制的polyfills。 复制代码释放魔法:
+Just the polyfills you need for your site, tailored to each browser. Copy the code to unleash the magic:
 
 ```
 <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 ```
 
-Polyfill.io读取每个请求的User-Agent头并返回适合请求浏览器的polyfill。 根据您在应用中使用的功能量身定制响应,并查看我们的实例以快速入门。
-
-
-# ajax Vs fetch
-
-`与其使用各种ajax第三方库，不如使用原始fetch`
-
-> 总结一下，Fetch 优点主要有：
-
-> 语法简洁，更加语义化
-基于标准 Promise 实现，支持 async/await
-同构方便，使用 isomorphic-fetch --[传统 Ajax 已死，Fetch 永生](https://github.com/camsong/blog/issues/2)
-未来更容易扩展 -- by me
-
-
-我使用ajax经历过三个阶段：
-1、 jQuery时期，我用jQuery的`ajax`
-2、 类似Vue的现代框架时，使用[axio](https://github.com/axios/axios)
-3、 再后来我就使用浏览器原生的`fetch`
-
-> Fetch API  提供了一个 JavaScript接口，用于访问和操纵HTTP管道的部分，例如请求和响应。它还提供了一个全局 fetch()方法，该方法提供了一种简单，合乎逻辑的方式来跨网络异步获取资源。-- [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
-
-> 这种功能以前是使用  XMLHttpRequest实现的。Fetch提供了一个更好的替代方法，可以很容易地被其他技术使用，例如 Service Workers。Fetch还提供了单个逻辑位置来定义其他HTTP相关概念，例如 CORS和HTTP的扩展。-- [MDN](https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch)
-
-从[caniuse](https://caniuse.com/#search=fetch)的数据来看，fetch方法除IE11不支持以外，大部分常用浏览器都支持了。
-
-![](./static/fetch.png)
-
-fetch接口示例：
-```
-fetch('/users.json')
-  .then(function(response) {
-    return response.json()
-  }).then(function(json) {
-    console.log('parsed json', json)
-  }).catch(function(ex) {
-    console.log('parsing failed', ex)
-  })
-
-
-  fetch('/users.html')
-  .then(function(response) {
-    return response.text()
-  }).then(function(body) {
-    document.body.innerHTML = body
-  })
-```
-
-# fetch相关文章
-- [传统 Ajax 已死，Fetch 永生](https://github.com/camsong/blog/issues/2)
-- [fetch 简介: 新一代 Ajax API](https://juejin.im/entry/574512b7c26a38006c43567c)
-- [fetch 没有你想象的那么美
-](http://undefinedblog.com/window-fetch-is-not-as-good-as-you-imagined/)
-
-# fetch相关库
-- [github/fetch](https://github.com/github/fetch)
+Polyfill.io reads the User-Agent header of each request and returns polyfills that are suitable for the requesting browser. Tailor the response based on the features you're using in your app, and see our live examples to get started quickly.
 
 
 
