@@ -21,7 +21,7 @@ yarn add xfire
 
 # Example
 
-首先需要一个配置文件
+first, xfire need a config file
 ```
 // api.config.js
 
