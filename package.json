@@ -2,8 +2,9 @@
   "name": "xfire",
   "version": "0.0.6",
   "description": "stupid simple, highly configurable fetch interface batch generation tool",
-  "main": "dist/index.js",
-  "module": "src/main.js",
+  "main": "dist/xfire.cjs.js",
+  "module": "dist/xfire.esm.js",
+  "browser": "dist/xfire.umd.js",
   "scripts": {
     "test": "jest --no-cache",
     "dev": "rollup -w --config rollup.config.js",
@@ -33,10 +34,12 @@
     "rollup-plugin-alias": "^1.4.0",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-json": "^2.3.0",
     "rollup-plugin-node-resolve": "^3.0.2"
   },
   "dependencies": {
-    "superstruct": "^0.5.0"
+    "axios": "^0.17.1",
+    "lodash": "^4.17.4"
   },
   "keywords": [
     "fetch",

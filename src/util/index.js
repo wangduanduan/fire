@@ -1,6 +1,7 @@
-/* global fetch */
-import { struct } from 'superstruct'
-import CONFIG_STRUCT from '../const/config-struct.js'
+import keys from 'lodash/keys'
+// import {keys} from 'lodash'
+import axios from 'axios'
+
 const templateRE = /{{([^}]+)?}}/
 
 export function templateQuery (tpl = '', data = {}) {
@@ -16,7 +17,7 @@ export function templateQuery (tpl = '', data = {}) {
 export function stringify (Param = {}) {
   var payload = []
 
-  Object.keys(Param).forEach((key) => {
+  keys(Param).forEach((key) => {
     payload.push(`${key}=${Param[key]}`)
   })
 
@@ -24,29 +25,9 @@ export function stringify (Param = {}) {
 }
 
 export function fireFetch (url, init) {
-  return new Promise((resolve, reject) => {
-    fetch(url, init)
-    .then((res) => {
-      if (res.ok) {
-        if (res.headers.get('content-type') && res.headers.get('content-type').includes('application/json')) {
-          resolve(res.json())
-        } else {
-          resolve(res)
-        }
-      } else {
-        reject(res)
-      }
-    })
-    .catch((err) => {
-      reject(err)
-    })
-  })
+  return axios(init)
 }
 
 export function checkConfig (config) {
-  struct(CONFIG_STRUCT.config)(config)
 
-  config.list.forEach((item) => {
-    item = struct(CONFIG_STRUCT.item, CONFIG_STRUCT.defaultItem)(item)
-  })
 }
