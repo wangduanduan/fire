@@ -1,7 +1,11 @@
 # :fire::fire: xfire :fire::fire:
 
+![Travis](https://img.shields.io/travis/wangduanduan/xfire.svg)
+
 [![npm](https://img.shields.io/npm/v/xfire.svg)](https://www.npmjs.org/package/xfire) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com) [![Packagist](https://img.shields.io/packagist/l/doctrine/orm.svg)]()
 [![npm](https://img.shields.io/npm/dm/xfire.svg)]()
+
+
 
 stupid simple, high configurable fetch api batch generate tool
 
