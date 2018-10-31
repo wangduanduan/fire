@@ -1,7 +1,3 @@
-import keys from 'lodash/keys'
-// import {keys} from 'lodash'
-import axios from 'axios'
-
 const templateRE = /{{([^}]+)?}}/
 
 export function templateQuery (tpl = '', data = {}) {
@@ -17,17 +13,9 @@ export function templateQuery (tpl = '', data = {}) {
 export function stringify (Param = {}) {
   var payload = []
 
-  keys(Param).forEach((key) => {
+  Object.keys(Param).forEach((key) => {
     payload.push(`${key}=${Param[key]}`)
   })
 
   return payload.join('&')
-}
-
-export function fireFetch (url, init) {
-  return axios(init)
-}
-
-export function checkConfig (config) {
-
 }

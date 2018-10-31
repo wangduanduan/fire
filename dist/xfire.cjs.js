@@ -1,12 +1,5 @@
 'use strict';
 
-function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
-
-var keys = _interopDefault(require('lodash/keys'));
-var axios = _interopDefault(require('axios'));
-var assign = _interopDefault(require('lodash/assign'));
-
-// import {keys} from 'lodash'
 const templateRE = /{{([^}]+)?}}/;
 
 function templateQuery (tpl = '', data = {}) {
@@ -19,59 +12,75 @@ function templateQuery (tpl = '', data = {}) {
   return tpl
 }
 
-function stringify (Param = {}) {
-  var payload = [];
-
-  keys(Param).forEach((key) => {
-    payload.push(`${key}=${Param[key]}`);
-  });
-
-  return payload.join('&')
-}
-
 var CONTENT_TYPE = {
   json: 'application/json; charset=UTF-8',
   formData: 'application/x-www-form-urlencoded; charset=UTF-8'
 }
 
-var headers = {};
-
-function fire (queryParam = {}, body) {
-  let url = templateQuery(this.path, queryParam);
-  let init = {
+function fireAxios (queryParam = {}, body) {
+  let url = templateQuery(this.url, queryParam);
+  let config = {
     url: url,
     method: this.method,
-    headers: assign({'Content-Type': CONTENT_TYPE[this.contentType] || CONTENT_TYPE.json}, headers)
+    headers: {
+      'Content-Type': this.contentType || CONTENT_TYPE.json
+    }
   };
 
   if (body) {
-    init.data = body;
-  }
-  if (body && init.headers['Content-Type'] === CONTENT_TYPE.formData) {
-    init.data = stringify(body);
+    config.data = body;
   }
 
-  return axios(init)
+  return this.$http(config)
 }
 
-function setHeaders (_headers) {
-  headers = assign(headers, _headers);
+function connectAxios (config, axios) {
+  const api = {};
+
+  const instance = axios.create({
+    baseURL: config.baseURL || '',
+    timeout: config.timeout || 5000,
+    headers: config.headers || {}
+  });
+
+  config.apis.forEach((item) => {
+    api[item.name] = item;
+    api[item.name].fire = fireAxios;
+    api[item.name].$http = instance;
+  });
+
+  api.$setCommonHeader = (key, value) => {
+    instance.defaults.headers.common[key] = value;
+  };
+
+  return api
 }
 
-var main = {
-  init (config) {
-    var api = {};
+function connectJQuery () {}
 
-    config.list.forEach((item) => {
-      item.path = config.prefix + item.path;
-      api[item.name] = item;
-      api[item.name].fire = fire;
-    });
-
-    api.$setHeaders = setHeaders;
-
-    return api
+function checkConfig (config) {
+  if (!config.baseURL) {
+    throw new Error('config.baseURL not exist')
   }
+  if (!config.apis || config.apis.length === 0) {
+    throw new Error('config.apis not exist or apis length === 0')
+  }
+  config.apis.forEach((item) => {
+    if (!item.name || !item.url) {
+      throw new Error('item.name or item.url not exist')
+    }
+  });
+}
+
+function main (config, httpClient) {
+  checkConfig(config);
+  if (httpClient.Axios) {
+    return connectAxios(config, httpClient)
+  }
+  if (httpClient.ajax) {
+    return connectJQuery()
+  }
+  throw new Error('axios or jquery not exist')
 }
 
 module.exports = main;
