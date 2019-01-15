@@ -73,6 +73,8 @@ NOTICE: if config not pass check, xfire will throw a Error
 ---|---|---|---|---
 config.baseURL | string | yes |  | common prefix: all apis are same
 config.apis | array | yes |  | api array list 
+config.timeout | number | no | 5000 | 请求超时时间
+config.headers | object | no | {} | 请求头
 
 `config list field descirption`
 
@@ -87,7 +89,7 @@ contentType | string | no | application/json; charset=UTF-8 | 请求体类型。
 ## $setCommonHeader(key, value): 设置请求头
 
 ```
-API.$setHeaders({sessionId: 'jfsldkf-sdflskdjf-sflskfjlsf'})
+API.$setCommonHeader({sessionId: 'jfsldkf-sdflskdjf-sflskfjlsf'})
 ```
 
 ## fire(pathParm, body)
